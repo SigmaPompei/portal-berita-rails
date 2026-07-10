@@ -1,0 +1,53 @@
+<div class="bg-white rounded-lg shadow p-8 max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6">✏️ Tulis Artikel Baru</h1>
+
+  <% if @article.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+      <p class="font-bold mb-2">Gagal disimpan karena:</p>
+      <ul class="list-disc list-inside">
+        <% @article.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @article do |form| %>
+    <div class="mb-4">
+      <%= form.label :title, "Judul Artikel", class: "block text-gray-700 font-bold mb-2" %>
+      <%= form.text_field :title,
+          class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500",
+          placeholder: "Masukkan judul artikel..." %>
+    </div>
+
+    <%# KATEGORI %>
+    <div class="mb-4">
+      <%= form.label :category_id, "Kategori", class: "block text-gray-700 font-bold mb-2" %>
+      <%= form.select :category_id,
+          Category.all.map { |c| [c.name, c.id] },
+          { include_blank: "-- Pilih Kategori --" },
+          class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500" %>
+    </div>
+
+    <%# FOTO COVER %>
+    <div class="mb-4">
+      <%= form.label :cover_image, "Foto Cover", class: "block text-gray-700 font-bold mb-2" %>
+      <%= form.file_field :cover_image,
+          class: "w-full border border-gray-300 rounded px-3 py-2",
+          accept: "image/*" %>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :body, "Isi Artikel", class: "block text-gray-700 font-bold mb-2" %>
+      <%= form.rich_text_area :body,
+          class: "w-full border border-gray-300 rounded focus:outline-none focus:border-red-500" %>
+    </div>
+
+    <div class="flex gap-3">
+      <%= form.submit "💾 Simpan Artikel",
+          class: "bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 cursor-pointer font-bold" %>
+      <%= link_to "Batal", articles_path,
+          class: "bg-gray-200 text-gray-700 px-6 py-2 rounded hover:bg-gray-300" %>
+    </div>
+  <% end %>
+</div>

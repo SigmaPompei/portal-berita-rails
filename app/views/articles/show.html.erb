@@ -1,0 +1,36 @@
+<div class="bg-white rounded-lg shadow p-8">
+  <% if @article.cover_image.attached? %>
+    <%= image_tag @article.cover_image,
+        class: "w-full h-64 object-cover rounded-lg mb-6" %>
+  <% end %>
+
+  <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= @article.title %></h1>
+  
+  <div class="flex items-center gap-4 text-gray-400 text-sm mb-4">
+    <span>✍️ <%= @article.user&.email %></span>
+    <span>📅 <%= @article.created_at.strftime("%d %B %Y") %></span>
+    <span>👁️ <%= @article.views_count %> kali dilihat</span>
+    <% if @article.category %>
+      <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">
+        <%= @article.category.name %>
+      </span>
+    <% end %>
+  </div>
+
+  <hr class="my-4">
+  <div class="prose max-w-none text-gray-700">
+    <%= @article.body %>
+  </div>
+</div>
+
+<div class="flex gap-3 mt-6">
+  <%= link_to "🔙 Kembali", articles_path,
+      class: "bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" %>
+  <% if user_signed_in? && @article.user == current_user %>
+    <%= link_to "✏️ Edit", edit_article_path(@article),
+        class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+    <%= link_to "🗑️ Hapus", @article,
+        data: { turbo_method: :delete, turbo_confirm: "Yakin hapus?" },
+        class: "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" %>
+  <% end %>
+</div>
