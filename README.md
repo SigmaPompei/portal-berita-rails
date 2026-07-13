@@ -1,24 +1,40 @@
-# README
+# 📰 Portal Berita Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Aplikasi portal berita modern dibuat dengan Ruby on Rails 8.
 
-Things you may want to cover:
+## 🌐 Demo
+[Lihat Aplikasi](https://web-production-874ee.up.railway.app)
 
-* Ruby version
+## ✨ Fitur
+- 📝 CRUD Artikel dengan Rich Text Editor
+- 🔐 Authentication (Login/Register/Username)
+- 📂 Kategori Artikel
+- 🔍 Search & Pagination
+- 👁️ View Counter
+- 📸 Upload Foto (Cloudinary)
+- 👑 Role Admin dengan Dashboard
+- 🧪 RSpec Testing (22 test)
+- 🎨 Tailwind CSS
 
-* System dependencies
+## 🛠️ Tech Stack
+- Ruby on Rails 8
+- PostgreSQL
+- Tailwind CSS
+- Devise (Authentication)
+- Cloudinary (Storage)
+- Kaminari (Pagination)
+- RSpec (Testing)
+- Railway (Deploy)
 
-* Configuration
+## 🚀 Cara Install Lokal
+```bash
+git clone https://github.com/SigmaPompei/portal-berita-rails
+cd portal-berita-rails
+bundle install
+rails db:migrate
+rails db:seed
+rails server
+```
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 👤 Developer
+Dibuat oleh SigmaPompei
