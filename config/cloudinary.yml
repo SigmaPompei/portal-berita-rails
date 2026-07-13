@@ -1,0 +1,4 @@
+production:
+  cloud_name: <%= ENV["xqffhmds"] %>
+  api_key: <%= ENV["312162294352591"] %>
+  api_secret: <%= ENV["jR_8H0pOyUi2j6zSPzr_pNk3Nj4"] %>
