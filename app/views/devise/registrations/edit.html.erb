@@ -1,42 +1,67 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div class="bg-white rounded-lg shadow p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">⚙️ Edit Profil</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i></p>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-    <% if @minimum_password_length %>
-      <p><em><%= @minimum_password_length %> characters minimum</em></p>
+    <% if resource.errors.any? %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <ul class="list-disc list-inside">
+          <% resource.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+
+      <div class="mb-4">
+        <%= f.label :username, "Username", class: "block text-gray-700 font-bold mb-2" %>
+        <%= f.text_field :username,
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500",
+            placeholder: "Masukkan username kamu" %>
+        <p class="text-gray-400 text-xs mt-1">Username tampil sebagai nama penulis artikel</p>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :email, "Email", class: "block text-gray-700 font-bold mb-2" %>
+        <%= f.email_field :email,
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500" %>
+      </div>
+
+      <hr class="my-4">
+      <p class="text-gray-500 text-sm mb-4">Isi password hanya jika ingin mengubahnya:</p>
+
+      <div class="mb-4">
+        <%= f.label :password, "Password Baru", class: "block text-gray-700 font-bold mb-2" %>
+        <%= f.password_field :password,
+            autocomplete: "off",
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500",
+            placeholder: "Kosongkan jika tidak ingin ubah" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password_confirmation, "Konfirmasi Password Baru", class: "block text-gray-700 font-bold mb-2" %>
+        <%= f.password_field :password_confirmation,
+            autocomplete: "off",
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500" %>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="mb-6">
+        <%= f.label :current_password, "Password Saat Ini", class: "block text-gray-700 font-bold mb-2" %>
+        <%= f.password_field :current_password,
+            autocomplete: "off",
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500",
+            placeholder: "Wajib diisi untuk simpan perubahan" %>
+      </div>
+
+      <%= f.submit "💾 Simpan Perubahan",
+          class: "w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 cursor-pointer font-bold" %>
+    <% end %>
+
+    <p class="text-center mt-4 text-gray-500 text-sm">
+      <%= link_to "← Kembali", root_path, class: "text-red-600 hover:underline" %>
+    </p>
   </div>
-
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i></p>
-    <p><%= f.password_field :current_password, autocomplete: "current-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>

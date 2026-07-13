@@ -21,7 +21,7 @@
 
         <div class="flex items-center gap-4">
           <% if user_signed_in? %>
-            <span class="text-white text-sm">👤 <%= current_user.email %>
+            <span class="text-white text-sm">👤 <%= current_user.display_name %>
             <% if current_user.admin? %>
       <span class="bg-yellow-400 text-yellow-900 text-xs px-2 py-0.5 rounded-full ml-1 font-bold">ADMIN</span>
           <% end %>

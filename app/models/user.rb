@@ -3,10 +3,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :articles
-
   enum :role, { user: 0, admin: 1 }
+
+  validates :username,
+    uniqueness: { case_sensitive: false },
+    length: { minimum: 3 },
+    allow_blank: true
 
   def admin?
     role == "admin"
+  end
+
+  def display_name
+    username.present? ? username : email.split("@").first
   end
 end

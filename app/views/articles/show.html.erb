@@ -7,7 +7,7 @@
   <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= @article.title %></h1>
   
   <div class="flex items-center gap-4 text-gray-400 text-sm mb-4">
-    <span>✍️ <%= @article.user&.email %></span>
+    <span>✍️ <%= @article.user&.display_name %></span>
     <span>📅 <%= @article.created_at.strftime("%d %B %Y") %></span>
     <span>👁️ <%= @article.views_count %> kali dilihat</span>
     <% if @article.category %>
