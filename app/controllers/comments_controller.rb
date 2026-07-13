@@ -5,13 +5,7 @@ class CommentsController < ApplicationController
 
  def create
   @article = Article.find(params[:article_id])
-  
-  unless current_user
-    redirect_to new_user_session_path, alert: "Login dulu!"
-    return
-  end
-
-  @comment = @article.comments.new(content: params[:comment][:content])
+  @comment = @article.comments.new(comment_params)
   @comment.user = current_user
 
   if @comment.save
