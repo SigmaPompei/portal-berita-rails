@@ -5,11 +5,12 @@
   <% end %>
 
   <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= @article.title %></h1>
-  
+
   <div class="flex items-center gap-4 text-gray-400 text-sm mb-4">
     <span>✍️ <%= @article.user&.display_name %></span>
     <span>📅 <%= @article.created_at.strftime("%d %B %Y") %></span>
     <span>👁️ <%= @article.views_count %> kali dilihat</span>
+    <span>💬 <%= @article.comments.count %> komentar</span>
     <% if @article.category %>
       <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">
         <%= @article.category.name %>
@@ -23,7 +24,7 @@
   </div>
 </div>
 
-<div class="flex gap-3 mt-6">
+<div class="flex gap-3 mt-6 mb-8">
   <%= link_to "🔙 Kembali", articles_path,
       class: "bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" %>
   <% if user_signed_in? && @article.user == current_user %>
@@ -32,5 +33,62 @@
     <%= link_to "🗑️ Hapus", @article,
         data: { turbo_method: :delete, turbo_confirm: "Yakin hapus?" },
         class: "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" %>
+  <% end %>
+</div>
+
+<%# SECTION KOMENTAR %>
+<div class="bg-white rounded-lg shadow p-8 mt-6">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">
+    💬 Komentar (<%= @article.comments.count %>)
+  </h2>
+
+  <%# FORM KOMENTAR %>
+  <% if user_signed_in? %>
+    <%= form_with url: article_comments_path(@article), method: :post, local: true do |form| %>
+      <div class="mb-4">
+        <%= form.text_area :content,
+            placeholder: "Tulis komentar kamu...",
+            rows: 3,
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500" %>
+      </div>
+      <%= form.submit "💬 Kirim Komentar",
+          class: "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer font-bold" %>
+    <% end %>
+  <% else %>
+    <div class="bg-gray-50 border border-gray-200 rounded p-4 text-center mb-6">
+      <p class="text-gray-500">
+        <%= link_to "Login", new_user_session_path, class: "text-red-600 hover:underline font-bold" %>
+        untuk menulis komentar
+      </p>
+    </div>
+  <% end %>
+
+  <hr class="my-6">
+
+  <%# DAFTAR KOMENTAR %>
+  <% if @article.comments.empty? %>
+    <p class="text-gray-400 text-center py-4">Belum ada komentar. Jadilah yang pertama! 💬</p>
+  <% else %>
+    <% @article.comments.order(created_at: :desc).each do |comment| %>
+      <div class="border-b border-gray-100 py-4">
+        <div class="flex justify-between items-start">
+          <div class="flex gap-3 items-start">
+            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center font-bold text-red-600">
+              <%= comment.user&.display_name&.first&.upcase %>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800 text-sm"><%= comment.user&.display_name %></p>
+              <p class="text-gray-400 text-xs"><%= comment.created_at.strftime("%d %B %Y %H:%M") %></p>
+              <p class="text-gray-700 mt-2"><%= comment.content %></p>
+            </div>
+          </div>
+          <% if user_signed_in? && (comment.user == current_user || current_user.admin?) %>
+            <%= link_to "🗑️", article_comment_path(@article, comment),
+                data: { turbo_method: :delete, turbo_confirm: "Yakin hapus komentar?" },
+                class: "text-red-400 hover:text-red-600 text-sm" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </div>

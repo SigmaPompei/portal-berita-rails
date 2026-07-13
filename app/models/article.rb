@@ -6,4 +6,5 @@ class Article < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 3, maximum: 100 }
   validates :body, presence: true
+  has_many :comments, dependent: :destroy
 end 

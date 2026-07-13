@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "registrations" }
   root 'pages#index'
-  resources :articles
+  resources :articles do
+    resources :comments, only: [:create, :destroy]
+  end
   resources :categories, only: [:index, :show]
 
   namespace :admin do
