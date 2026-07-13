@@ -3,17 +3,17 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:destroy]
   before_action :check_owner, only: [:destroy]
 
-  def create
-    @article = Article.find(params[:article_id])
-    @comment = @article.comments.new(comment_params)
-    @comment.user = current_user
+ def create
+  @article = Article.find(params[:article_id])
+  @comment = @article.comments.new(comment_params)
+  @comment.user = current_user
 
-    if @comment.save
-      redirect_to @article, notice: "Komentar berhasil ditambahkan!"
-    else
-      redirect_to @article, alert: "Komentar gagal ditambahkan!"
-    end
+  if @comment.save
+    redirect_to @article, notice: "Komentar berhasil ditambahkan!"
+  else
+    redirect_to @article, alert: "Gagal: #{@comment.errors.full_messages.join(', ')}"
   end
+end
 
   def destroy
     @article = @comment.article
