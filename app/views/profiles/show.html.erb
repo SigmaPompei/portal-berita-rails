@@ -1,0 +1,82 @@
+<%# HEADER PROFIL %>
+<div class="bg-white rounded-lg shadow p-8 mb-6">
+  <div class="flex items-center gap-6">
+    <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center text-3xl font-bold text-red-600">
+      <%= @user.display_name.first.upcase %>
+    </div>
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800"><%= @user.display_name %></h1>
+      <p class="text-gray-400 text-sm">Bergabung sejak <%= @user.created_at.strftime("%B %Y") %></p>
+    </div>
+  </div>
+
+  <%# STATISTIK %>
+  <div class="grid grid-cols-3 gap-4 mt-6">
+    <div class="bg-gray-50 rounded-lg p-4 text-center">
+      <p class="text-2xl font-bold text-red-600"><%= @user.articles.count %></p>
+      <p class="text-gray-500 text-sm">Artikel</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-4 text-center">
+      <p class="text-2xl font-bold text-blue-600"><%= @total_views %></p>
+      <p class="text-gray-500 text-sm">Total Views</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-4 text-center">
+      <p class="text-2xl font-bold text-green-600"><%= @total_comments %></p>
+      <p class="text-gray-500 text-sm">Komentar Diterima</p>
+    </div>
+  </div>
+</div>
+
+<%# ARTIKEL PENULIS %>
+<h2 class="text-xl font-bold text-gray-800 mb-4">📝 Artikel oleh <%= @user.display_name %></h2>
+
+<% if @articles.empty? %>
+  <div class="bg-white rounded-lg shadow p-10 text-center text-gray-400">
+    <p class="text-5xl mb-4">📭</p>
+    <p>Belum ada artikel.</p>
+  </div>
+<% else %>
+  <div class="grid grid-cols-2 gap-4">
+    <% @articles.each do |article| %>
+      <div class="bg-white rounded-lg shadow hover:shadow-md transition">
+        <% if article.cover_image.attached? %>
+          <%= image_tag article.cover_image,
+              class: "w-full h-36 object-cover rounded-t-lg" %>
+        <% else %>
+          <div class="w-full h-36 bg-gray-200 rounded-t-lg flex items-center justify-center">
+            <span class="text-gray-400 text-3xl">📰</span>
+          </div>
+        <% end %>
+        <div class="p-4">
+          <% if article.category %>
+            <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold mb-2 inline-block">
+              <%= article.category.name %>
+            </span>
+          <% end %>
+          <h3 class="font-bold text-gray-800 mb-2"><%= truncate(article.title, length: 60) %></h3>
+          <div class="flex justify-between items-center">
+            <small class="text-gray-400 text-xs">
+              👁️ <%= article.views_count %> |
+              💬 <%= article.comments.count %> |
+              📅 <%= article.created_at.strftime("%d %b %Y") %>
+            </small>
+            <%= link_to "Baca", article,
+                class: "bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# PAGINATION %>
+  <div class="flex justify-center mt-6 gap-1">
+    <% (1..@articles.total_pages).each do |page| %>
+      <% if page == @articles.current_page %>
+        <span class="w-8 h-8 flex items-center justify-center bg-red-600 text-white rounded text-sm font-bold"><%= page %></span>
+      <% else %>
+        <%= link_to page, profile_path(@user, page: page),
+            class: "w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 text-sm" %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
