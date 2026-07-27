@@ -76,6 +76,7 @@
               📅 <%= article.created_at.strftime("%d %B %Y") %>
               &nbsp;|&nbsp;
               👁️ <%= article.views_count %>
+              ❤️ <%= article.likes.count %>
             </small>
             <div class="flex gap-2">
               <%= link_to "👁️ Lihat", article,

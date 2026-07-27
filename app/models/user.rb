@@ -18,4 +18,5 @@ class User < ApplicationRecord
     username.present? ? username : email.split("@").first
   end
   has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 end

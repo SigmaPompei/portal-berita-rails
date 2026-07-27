@@ -35,7 +35,27 @@
         class: "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" %>
   <% end %>
 </div>
-
+  <%# TOMBOL LIKE %>
+  <% if user_signed_in? %>
+    <% if @article.likes.exists?(user: current_user) %>
+      <%= link_to article_like_path(@article, @article.likes.find_by(user: current_user)),
+          data: { turbo_method: :delete },
+          class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-bold" do %>
+        ❤️ Liked (<%= @article.likes.count %>)
+      <% end %>
+    <% else %>
+      <%= link_to article_likes_path(@article),
+          data: { turbo_method: :post },
+          class: "bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-red-100 hover:text-red-600 font-bold" do %>
+        🤍 Like (<%= @article.likes.count %>)
+      <% end %>
+    <% end %>
+  <% else %>
+    <span class="bg-gray-200 text-gray-400 px-4 py-2 rounded">
+      🤍 <%= @article.likes.count %> likes
+    </span>
+  <% end %>
+  </div>
 <%# SECTION KOMENTAR %>
 <div class="bg-white rounded-lg shadow p-8 mt-6">
   <h2 class="text-2xl font-bold text-gray-800 mb-6">
